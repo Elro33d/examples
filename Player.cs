@@ -61,45 +61,6 @@ public class Player : LivingEntity
     private short maxFrameNum = 20000; // After reaching this number the currntFrame set to 0 
     private int inputBatchSize = 20;
 
-
-    public struct PlayerInputCommand : INetworkSerializable
-    {
-        public short Frame;
-        public ushort InputFlags; // Changed from byte to ushort
-
-        public void SetMoveLeft(bool value) => SetFlag(0, value);
-        public void SetMoveRight(bool value) => SetFlag(1, value);
-        public void SetJump(bool value) => SetFlag(2, value);
-        public void SetBend(bool value) => SetFlag(3, value);
-        public void SetJumpToAnotherIsland(bool value) => SetFlag(4, value);
-        public void SetAttack(bool value) => SetFlag(5, value);
-        public void SetCut(bool value) => SetFlag(6, value);
-        public void SetExtractRoots(bool value) => SetFlag(7, value);
-        public void SetMine(bool value) => SetFlag(8, value); // Now works as intended
-
-        private void SetFlag(int bit, bool value)
-        {
-            if (value) InputFlags |= (ushort)(1 << bit);
-            else InputFlags &= (ushort)~(1 << bit);
-        }
-
-        public bool MoveLeft => (InputFlags & (1 << 0)) != 0;
-        public bool MoveRight => (InputFlags & (1 << 1)) != 0;
-        public bool Jump => (InputFlags & (1 << 2)) != 0;
-        public bool Bend => (InputFlags & (1 << 3)) != 0;
-        public bool JumpToAnotherIsland => (InputFlags & (1 << 4)) != 0;
-        public bool Attack => (InputFlags & (1 << 5)) != 0;
-        public bool Cut => (InputFlags & (1 << 6)) != 0;
-        public bool ExtractRoots => (InputFlags & (1 << 7)) != 0;
-        public bool Mine => (InputFlags & (1 << 8)) != 0;
-
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-        {
-            serializer.SerializeValue(ref Frame);
-            serializer.SerializeValue(ref InputFlags);
-        }
-    }
-
     public struct PosAndFrame : INetworkSerializable
     {
         public short Frame;
@@ -639,6 +600,44 @@ public class Player : LivingEntity
             }
         }
         return livingEntityToAttack;
+    }
+
+    public struct PlayerInputCommand : INetworkSerializable
+    {
+        public short Frame;
+        public ushort InputFlags;
+
+        public void SetMoveLeft(bool value) => SetFlag(0, value);
+        public void SetMoveRight(bool value) => SetFlag(1, value);
+        public void SetJump(bool value) => SetFlag(2, value);
+        public void SetBend(bool value) => SetFlag(3, value);
+        public void SetJumpToAnotherIsland(bool value) => SetFlag(4, value);
+        public void SetAttack(bool value) => SetFlag(5, value);
+        public void SetCut(bool value) => SetFlag(6, value);
+        public void SetExtractRoots(bool value) => SetFlag(7, value);
+        public void SetMine(bool value) => SetFlag(8, value); // Now works as intended
+
+        private void SetFlag(int bit, bool value)
+        {
+            if (value) InputFlags |= (ushort)(1 << bit);
+            else InputFlags &= (ushort)~(1 << bit);
+        }
+
+        public bool MoveLeft => (InputFlags & (1 << 0)) != 0;
+        public bool MoveRight => (InputFlags & (1 << 1)) != 0;
+        public bool Jump => (InputFlags & (1 << 2)) != 0;
+        public bool Bend => (InputFlags & (1 << 3)) != 0;
+        public bool JumpToAnotherIsland => (InputFlags & (1 << 4)) != 0;
+        public bool Attack => (InputFlags & (1 << 5)) != 0;
+        public bool Cut => (InputFlags & (1 << 6)) != 0;
+        public bool ExtractRoots => (InputFlags & (1 << 7)) != 0;
+        public bool Mine => (InputFlags & (1 << 8)) != 0;
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref Frame);
+            serializer.SerializeValue(ref InputFlags);
+        }
     }
 
 }
