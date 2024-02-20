@@ -17,8 +17,8 @@ last_square_time = pygame.time.get_ticks()
 last_background_time = pygame.time.get_ticks()
 background_color = WHITE
 generation_time = 5000  # in milliseconds
-generation_chance = 0.5  # in percentage
-simulation_speed = 100  # in multiples of real time
+generation_chance = 0.5
+simulation_speed = 100
 
 class Square:
     def __init__(self, x, y, color, width=50, height=50):
