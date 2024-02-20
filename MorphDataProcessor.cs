@@ -61,7 +61,7 @@ public class MorphDataProcessor : EditorWindow
         serializedObject.ApplyModifiedProperties();
     }
 
-    private async void ProcessObjects()
+    private void ProcessObjects()
     {
         BinaryFormatter bf = new BinaryFormatter();
         string path = "Assets/Resources/ClosestPointIndicesData/";
